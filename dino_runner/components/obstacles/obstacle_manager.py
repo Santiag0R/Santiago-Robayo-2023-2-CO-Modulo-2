@@ -18,6 +18,7 @@ class ObstacleManager:
             obstacle.update(game.game_speed, self.obstacles)
             if game.player.dino_rect.colliderect(obstacle.rect):
                 game.playing = False
+                game.death_counts +=1
                 break
 
     def draw (self, screen):
@@ -34,3 +35,7 @@ class ObstacleManager:
         else:
             obstacle = Bird()
         return obstacle
+    
+    def reset_obstacles(self):
+        self.obstacles = []
+        
