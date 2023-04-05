@@ -23,14 +23,13 @@ class Game:
         self.menu = Menu(self.screen, "Press any key to start...")
         self.runing = False 
         self.score = 0
+        self.max_score = 0
         self.death_counts = 0
 
     def run(self):
         # Game loop: events - update - draw
         self.playing = True
-        self.obstacle_manager.reset_obstacles()
-        self.game_speed = self.GAME_SPEED
-        self.score = 0
+        self.reset_game()
         while self.playing:
             self.events()
             self.update()
@@ -38,7 +37,7 @@ class Game:
 
     def execute(self):
         self.runing = True
-        #Mientra la aplicacion corre
+        #Mientras la aplicacion corre
         while self.runing:
             #Y no este jugando
             if not self.playing:
@@ -56,6 +55,7 @@ class Game:
         self.player.update(user_input)
         self.obstacle_manager.update(self)
         self.update_score()
+        self.calculate_max_score()
         
     def draw(self):
         self.clock.tick(FPS)
@@ -64,6 +64,7 @@ class Game:
         self.player.draw(self.screen)
         self.obstacle_manager.draw(self.screen)
         self.draw_score()
+        self.draw_max_score()
         pygame.display.update()
         pygame.display.flip()
 
@@ -84,13 +85,13 @@ class Game:
         if self.death_counts == 0:
             self.menu.draw(self.screen)
         else:
-            self.menu.update_message("Dino has died :((")
+            self.menu.update_message(f"GAME OVER,  score is: {self.score} max score is {self.max_score} Die: {self.death_counts} times")
             self.menu.draw(self.screen)
         self.menu.update(self)
 
     def update_score(self):
         self.score += 1
-        if self.score % 100 == 0 and self.score < 500:
+        if self.score % 300 == 0 and self.score < 1000:
             self.game_speed +=5
 
     def draw_score(self):
@@ -99,3 +100,20 @@ class Game:
         text_rect = text.get_rect()
         text_rect.center = (1000,50)
         self.screen.blit(text,text_rect)
+
+    def draw_max_score(self):
+            font = pygame.font.Font(FONT_STYLE,30)
+            text = font.render(f"Max Score: {self.max_score}", True, (0,0,0))
+            text_rect = text.get_rect()
+            text_rect.center = (800,50)
+            self.screen.blit(text,text_rect)
+
+    def calculate_max_score(self):
+        if self.score > self.max_score: 
+            self.max_score = self.score
+
+    def reset_game(self):
+        # metodo para resetear
+        self.obstacle_manager.reset_obstacles()
+        self.game_speed = self.GAME_SPEED
+        self.score = 0
