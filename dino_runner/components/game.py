@@ -59,7 +59,8 @@ class Game:
         self.obstacle_manager.update(self)
         self.update_score()
         self.update_highest_score()
-        self.power_up_manager.update(self)
+        self.power_up_manager.update(self) ##Hace que se muevan de izquierda a derecha
+
 
     def draw(self):
         self.clock.tick(FPS)
@@ -69,7 +70,7 @@ class Game:
         self.obstacle_manager.draw(self.screen)
         self.score.draw(self.screen)
         self.highest_score.draw_hs(self.screen)
-        self.draw_power_up()
+        self.draw_power_up() 
         self.power_up_manager.draw(self.screen)
         pygame.display.update()
         pygame.display.flip()
@@ -117,7 +118,7 @@ class Game:
         if self.player.has_power_up:
             time_to_show = round((self.player.power_up_time - pygame.time.get_ticks())/1000,2)
             if time_to_show >= 0:
-                self.menu.draw(self.screen,f"{self.player.type.capitalize()} anable for {time_to_show} seconds",450,50)
+                self.menu.draw(self.screen,f"{self.player.type.capitalize()} enable for {time_to_show} seconds",450,50)
             else:
                 self.player.has_power_up = False
-                self.player = DEFAULT_TYPE
+                self.player.type = DEFAULT_TYPE

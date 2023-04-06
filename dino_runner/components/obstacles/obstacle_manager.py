@@ -19,13 +19,13 @@ class ObstacleManager:
 
     for obstacle in self.obstacles:
       obstacle.update(game.game_speed, self.obstacles)
-      if game.player.dino_rect.colliderect(obstacle.rect):
+      if game.player.dino_rect.colliderect(obstacle.rect): #QUITA OBSTACULOS
         if game.player.type != SHIELD_TYPE:   
           game.playing = False
           game.death_count.update()
           break
         else:
-          self.obstacles.remove(obstacle)
+          self.obstacles.remove(obstacle) 
 
   def draw(self, screen):
     for obstacle in self.obstacles:
